@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -46,9 +47,11 @@
                                         <TableColumn fx:id="columnKDelete" prefWidth="99.0" text="删除" />
                                     </columns>
                                 </TableView>
-                                <TextField fx:id="kContent" layoutX="14.0" layoutY="499.0" promptText="知识点" />
-                                <TextField fx:id="kCourse" layoutX="216.0" layoutY="499.0" promptText="所属课程" />
-                                <Button layoutX="418.0" layoutY="499.0" mnemonicParsing="false" onMouseClicked="#addKnowledge" text="添加" />
+                                <TextField fx:id="kContent" layoutX="14.0" layoutY="499.0" prefHeight="30.0" prefWidth="415.0" promptText="知识点" />
+                                <!--<TextField fx:id="kCourse" layoutX="216.0" layoutY="499.0" promptText="所属课程" />-->
+                                <Button layoutX="803.0" layoutY="499.0" mnemonicParsing="false" onMouseClicked="#addKnowledge" text="添加" />
+                        <ChoiceBox fx:id="cbKCourse" layoutX="506.0" layoutY="499.0" prefHeight="30.0" prefWidth="288.0" />
+                        <Label layoutX="431.0" layoutY="504.0" text="所属课程：" />
                             </children>
                         </AnchorPane>
 
@@ -69,12 +72,16 @@
                                         <TableColumn fx:id="columnQDelete" prefWidth="99.0" text="删除" />
                                     </columns>
                                 </TableView>
-                                <TextField fx:id="qType" layoutX="7.0" layoutY="499.0" prefHeight="30.0" prefWidth="87.0" promptText="题目类型" />
+
+                                <!--<TextField fx:id="qType" layoutX="7.0" layoutY="499.0" prefHeight="30.0" prefWidth="87.0" promptText="题目类型" />-->
+                                <ChoiceBox fx:id="qType" layoutX="7.0" layoutY="499.0" prefHeight="30.0" prefWidth="87.0" />
                                 <TextField fx:id="qContent" layoutX="92.0" layoutY="499.0" prefHeight="30.0" prefWidth="223.0" promptText="题干" />
-                                <TextField fx:id="qAnswer" layoutX="314.0" layoutY="499.0" prefHeight="30.0" prefWidth="212.0" promptText="题目备选项" />
+                                <TextField fx:id="qAnswer" layoutX="314.0" layoutY="499.0" prefHeight="30.0" prefWidth="212.0" promptText="题目备选项" text="A.1B.2C.3D.4" />
                                 <TextField fx:id="qRightAnswer" layoutX="526.0" layoutY="499.0" prefHeight="30.0" prefWidth="97.0" promptText="正确答案" />
-                                <TextField fx:id="qKnowledge" layoutX="623.0" layoutY="499.0" prefHeight="30.0" prefWidth="101.0" promptText="所属知识点" />
-                                <TextField fx:id="qCourse" layoutX="723.0" layoutY="499.0" prefHeight="30.0" prefWidth="113.0" promptText="所属课程" />
+                                <!--<TextField fx:id="qKnowledge" layoutX="623.0" layoutY="499.0" prefHeight="30.0" prefWidth="101.0" promptText="所属知识点" />-->
+                                <!--<TextField fx:id="qCourse" layoutX="723.0" layoutY="499.0" prefHeight="30.0" prefWidth="113.0" promptText="所属课程" />-->
+                                <ChoiceBox fx:id="qKnowledge" layoutX="623.0" layoutY="499.0" prefHeight="30.0" prefWidth="101.0" />
+                                <ChoiceBox fx:id="qCourse" layoutX="723.0" layoutY="499.0" prefHeight="30.0" prefWidth="113.0" />
                                 <Button layoutX="836.0" layoutY="499.0" mnemonicParsing="false" onMouseClicked="#addQuestion" text="添加" />
 
                             </children>
@@ -86,7 +93,7 @@
                     <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="14.0" layoutY="14.0" prefWidth="868.0" text="使用说明如下：试题管理模块添加新试题文本框的格式，题目类型只能填：单选题、多选题、判断题、填空题其中一个；题目备选项格式（判断题和填空题则不填）：A.答案B.答案C.答案D.答案；正确答案单选题就写A、B、C、D其中一个，多选题写AB、ABC等组合，判断题则写”对”或“错”，填空题该写啥写啥" wrapText="true">
+                        <Label layoutX="14.0" layoutY="14.0" prefWidth="868.0" text="使用说明如下：试题管理模块添加新试题文本框的格式：题目备选项格式（判断题和填空题不用管这个空填什么，单选多选才需要注意这个格式）：A.答案B.答案C.答案D.答案；然后正确答案格式，单选题就写A、B、C、D其中一个，多选题写AB、ABC等组合，判断题则写”对”或“错”，填空题该写啥写啥" wrapText="true">
                            <font>
                               <Font size="20.0" />
                            </font></Label>

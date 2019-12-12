@@ -7,7 +7,8 @@ import javafx.beans.property.StringProperty;
  * @author baikunlong
  * @date 2019/12/9 21:08
  */
-public class Question {
+public class Question extends BaseBean{
+
     /**
      * 题型：0-单选题、1-多选题、2-判断题、3-填空题等四种题型。
      * 时间不够，全部改String
