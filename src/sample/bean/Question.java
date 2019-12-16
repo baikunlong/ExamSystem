@@ -8,6 +8,44 @@ import javafx.beans.property.StringProperty;
  * @date 2019/12/9 21:08
  */
 public class Question extends BaseBean{
+    /**
+     * 用户的答案，在用户填写答案时赋值
+     */
+    private String userAnswer;
+
+    public String getUserAnswer() {
+        return userAnswer;
+    }
+
+    public void setUserAnswer(String userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    /**
+     * 是否考
+     */
+    private boolean isExam;
+
+    public boolean isExam() {
+        return isExam;
+    }
+
+    public void setExam(boolean exam) {
+        isExam = exam;
+    }
+
+    /**
+     * 题目当前序号
+     */
+    private int order;
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
     /**
      * 题型：0-单选题、1-多选题、2-判断题、3-填空题等四种题型。

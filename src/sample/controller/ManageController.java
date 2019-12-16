@@ -4,9 +4,17 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import sample.bean.BaseBean;
 import sample.bean.Knowledge;
@@ -14,6 +22,7 @@ import sample.bean.Question;
 import sample.common.Common;
 import sample.bean.Course;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
@@ -63,6 +72,7 @@ public class ManageController implements Initializable {
     public ChoiceBox<String> qKnowledge;
     public ChoiceBox<String> qCourse;
     public ChoiceBox<String> cbKCourse;
+    public AnchorPane manageAp;
     private Connection con;
     private ObservableList<String> cbKList;
 
@@ -135,24 +145,7 @@ public class ManageController implements Initializable {
         }, courses, tableCourse, con));
 
         //查询所有数据
-        try {
-            String sql = "SELECT * FROM `exam_system`.`course` LIMIT 0, 1000";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                Course course = new Course();
-                course.setId(resultSet.getInt(1));
-                course.setcName(resultSet.getString(2));
-                course.setcNum(resultSet.getString(3));
-                course.setcScore(resultSet.getString(4));
-                courses.add(course);
-            }
-            ps.close();
-//            Common.setInformationDialog("提示", "总共查询到"+courses.size()+"条数据");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Common.setAlert("警告", "获取数据失败");
-        }
+        Common.initCourse(con, courses);
 
 //        模拟数据
 //        for (int i = 0; i < 20; i++) {
@@ -252,7 +245,7 @@ public class ManageController implements Initializable {
                 ps.setString(2, course.getcNum());
                 ps.setString(3, course.getcScore());
                 ps.executeUpdate();
-                setId(course, ps,courses,tableCourse);
+                setId(course, ps, courses, tableCourse);
             } catch (SQLException e) {
                 e.printStackTrace();
                 Common.setAlert("警告", "添加失败，请注意课程名称和课程号是唯一的！！！");
@@ -285,7 +278,8 @@ public class ManageController implements Initializable {
             ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            Common.setAlert("警告", "数据库错误");
+            Common.setAlert("警告", "请注意课程名称和课程号是唯一的");
+            return;
         }
         if (changeCount == 0) {
             Common.setAlert("警告", "没有更改任何数据！");
@@ -310,25 +304,8 @@ public class ManageController implements Initializable {
             }
         }, knowledges, tableKnowledge, con));
 
-        //todo 查询所有数据
         //查询所有数据
-        try {
-            String sql = "SELECT * FROM `exam_system`.`knowledge` LIMIT 0, 1000";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                Knowledge knowledge = new Knowledge();
-                knowledge.setId(resultSet.getInt(1));
-                knowledge.setkContent(resultSet.getString(2));
-                knowledge.setkCourse(resultSet.getString(3));
-                knowledges.add(knowledge);
-            }
-            ps.close();
-//            Common.setInformationDialog("提示", "总共查询到"+courses.size()+"条数据");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Common.setAlert("警告", "获取数据失败");
-        }
+        Common.initKnowledges(con, knowledges);
 
 //        for (int i = 0; i < 20; i++) {
 //            Knowledge knowledge = new Knowledge();
@@ -392,7 +369,7 @@ public class ManageController implements Initializable {
                 ps.setString(1, knowledge.getkContent());
                 ps.setString(2, knowledge.getkCourse());
                 ps.executeUpdate();
-                setId(knowledge, ps,knowledges,tableKnowledge);
+                setId(knowledge, ps, knowledges, tableKnowledge);
             } catch (Exception e) {
                 e.printStackTrace();
                 Common.setAlert("警告", "添加失败，请注意课程名称和课程号是唯一的！！！");
@@ -410,6 +387,8 @@ public class ManageController implements Initializable {
         //初始化下拉框
         ObservableList<String> qtypes = FXCollections.observableArrayList("单选题", "多选题", "判断题", "填空题");
         qType.setItems(qtypes);
+        //可以设置 预定义的提示信息（其他控件也可以）
+        qType.setTooltip(new Tooltip("题目类型"));
 
         ObservableList<String> kContents = FXCollections.observableArrayList();
         for (int i = 0; i < knowledges.size(); i++) {
@@ -433,27 +412,7 @@ public class ManageController implements Initializable {
         }, questions, tableQuestion, con));
 
         //查询所有数据
-        try {
-            String sql = "SELECT * FROM `exam_system`.`question` LIMIT 0, 1000";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                Question question = new Question();
-                question.setId(resultSet.getInt(1));
-                question.setqType(resultSet.getString(2));
-                question.setqContent(resultSet.getString(3));
-                question.setAnswer(resultSet.getString(4));
-                question.setkContent(resultSet.getString(5));
-                question.setcNum(resultSet.getString(6));
-                question.setRightAnswer(resultSet.getString(7));
-                questions.add(question);
-            }
-            ps.close();
-//            Common.setInformationDialog("提示", "总共查询到"+courses.size()+"条数据");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Common.setAlert("警告", "获取数据失败");
-        }
+        Common.initQuestions(con, questions);
 
 //        for (int i = 0; i < 20; i++) {
 //            Question question = new Question();
@@ -528,7 +487,7 @@ public class ManageController implements Initializable {
                 System.out.println("i3 = " + trim3.substring(i3, i4));
                 System.out.println("i4 = " + trim3.substring(i4));
             }
-            if ("判断题".equals(trim1)&&!"对".equals(trim4)&&!"错".equals(trim4)) {
+            if ("判断题".equals(trim1) && !"对".equals(trim4) && !"错".equals(trim4)) {
                 Common.setAlert("警告", "正确格式不正确，判断题只有对错，请看使用说明");
                 return;
             }
@@ -552,7 +511,7 @@ public class ManageController implements Initializable {
                 ps.setString(5, question.getcNum());
                 ps.setString(6, question.getRightAnswer());
                 ps.executeUpdate();
-                setId(question, ps,questions,tableQuestion);
+                setId(question, ps, questions, tableQuestion);
             } catch (Exception e) {
                 e.printStackTrace();
                 Common.setAlert("警告", "添加失败，请注意课程名称和课程号是唯一的！！！");

@@ -53,7 +53,6 @@
 //                                    System.out.println("剩余：" + courses.size());
 //                                    //必须刷新，不然最后几行时页面还是会缓存显示最后行数据
 //                                    tableCourse.refresh();
-//                                    //todo 删除数据
 //                                }
 //                            });
 //                        }
@@ -84,7 +83,6 @@
 //                                    System.out.println("剩余：" + knowledges.size());
 //                                    //必须刷新，不然最后几行时页面还是会缓存显示最后行数据
 //                                    tableKnowledge.refresh();
-//                                    //todo 删除数据
 //                                }
 //                            });
 //                        }

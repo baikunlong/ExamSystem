@@ -18,5 +18,6 @@
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Label>
+      <Button layoutX="466.0" layoutY="305.0" mnemonicParsing="false" text="查看默认账号" fx:id="defaultAccount"/>
    </children>
 </AnchorPane>

@@ -47,14 +47,14 @@ public class Common {
      * @param title
      * @param content
      */
-    public static void setConfirmationDialog(String title, String content) {
+    public static Alert setConfirmationDialog(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+        return alert;
     }
-
     /**
      * 删除键工厂
      * @param <S>
@@ -84,7 +84,7 @@ public class Common {
                             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                 @Override
                                 public void handle(MouseEvent event) {
-                                    //todo 删除数据库数据
+                                    //删除数据库数据
                                     //先判断删除哪个数据库,随意取其中一个对象即可判断
                                     S s = data.get(0);
                                     if(s instanceof Course){
@@ -143,6 +143,10 @@ public class Common {
 
     }
 
+    /**
+     * 初始化数据连接
+     * @return
+     */
     public static Connection initializeDB() {
         Connection conn = null;
         try {
@@ -155,4 +159,89 @@ public class Common {
         return conn;
     }
 
+
+    public static void initCourse(Connection con,ObservableList<Course> courses){
+        try {
+            String sql = "SELECT * FROM `exam_system`.`course` LIMIT 0, 1000";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                Course course = new Course();
+                course.setId(resultSet.getInt(1));
+                course.setcName(resultSet.getString(2));
+                course.setcNum(resultSet.getString(3));
+                course.setcScore(resultSet.getString(4));
+                courses.add(course);
+            }
+            ps.close();
+//            Common.setInformationDialog("提示", "总共查询到"+courses.size()+"条数据");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Common.setAlert("警告", "获取数据失败");
+        }
+    }
+    public static void initKnowledges(Connection con,ObservableList<Knowledge> knowledges){
+        try {
+            String sql = "SELECT * FROM `exam_system`.`knowledge` LIMIT 0, 1000";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                Knowledge knowledge = new Knowledge();
+                knowledge.setId(resultSet.getInt(1));
+                knowledge.setkContent(resultSet.getString(2));
+                knowledge.setkCourse(resultSet.getString(3));
+                knowledges.add(knowledge);
+            }
+            ps.close();
+//            Common.setInformationDialog("提示", "总共查询到"+courses.size()+"条数据");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Common.setAlert("警告", "获取数据失败");
+        }
+    }
+    public static void initQuestions(Connection con,ObservableList<Question> questions){
+        try {
+            String sql = "SELECT * FROM `exam_system`.`question` LIMIT 0, 1000";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                Question question = new Question();
+                question.setId(resultSet.getInt(1));
+                question.setqType(resultSet.getString(2));
+                question.setqContent(resultSet.getString(3));
+                question.setAnswer(resultSet.getString(4));
+                question.setkContent(resultSet.getString(5));
+                question.setcNum(resultSet.getString(6));
+                question.setRightAnswer(resultSet.getString(7));
+                questions.add(question);
+            }
+            ps.close();
+//            Common.setInformationDialog("提示", "总共查询到"+courses.size()+"条数据");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Common.setAlert("警告", "获取数据失败");
+        }
+    }
+
+    /**
+     * 判断两个字符串是否相等，忽略字符顺序
+     * @param s
+     * @param t
+     * @return
+     */
+    public static boolean canPerm(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+        int[] counter = new int[256];
+        for (char c : s.toCharArray()) {
+            counter[c]++;
+        }
+        for (char c : t.toCharArray()) {
+            if (--counter[c] < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
