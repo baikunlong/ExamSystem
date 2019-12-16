@@ -35,7 +35,6 @@ public class LoginController implements Initializable {
     private Connection con;
 
     public void login() throws IOException {
-        //todo 改为查询数据库的用户
         User user = queryUser(uName.getText(),pwd.getText());
 
         //模拟管理员登录

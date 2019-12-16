@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 /**
@@ -112,21 +113,32 @@ public class ExamController implements Initializable {
             e.setFont(new Font("微软雅黑",20));
             vbox.getChildren().add(e);
         }
-        //取一个就不能重复取了，所有要定义在外面
-        int j = 0;
+        Random random = new Random();
+        //这一轮是否添加了题目的标志
+        boolean isAdd;
+
         for (int i = 0; i < single; i++) {
-            for (; j < questions.size(); j++) {
+            isAdd=false;
+            for (int j = 0; j < questions.size(); j++) {
                 Question question = questions.get(j);
-                if (question.getqType().equals("单选题")&&question.getcNum().equals(cbCourse.getValue())) {
+                //要求单选题，课程类型对应，考试状态为false才可以添加
+                if (question.getqType().equals("单选题")&&question.getcNum().equals(cbCourse.getValue())&&!question.isExam()) {
+                    //随机添加
+                    if(random.nextInt(10)<5){
+                        continue;
+                    }
                     addSingle(++index, question);
                     //设置状态
                     question.setExam(true);
                     //设置题目序号
                     question.setOrder(index);
-                    //跳出去之前要记得加，不然循环的j++没执行
-                    j++;
+                    //设置为已经添加题目
+                    isAdd=true;
                     break;
                 }
+            }
+            if(!isAdd){
+                i--;
             }
         }
 
@@ -136,19 +148,28 @@ public class ExamController implements Initializable {
             e.setFont(new Font("微软雅黑",20));
             vbox.getChildren().add(e);
         }
-        j = 0;
         for (int i = 0; i < multi; i++) {
-            for (; j < questions.size(); j++) {
+            isAdd=false;
+            for (int j = 0; j < questions.size(); j++) {
                 Question question = questions.get(j);
-                if (question.getqType().equals("多选题")&&question.getcNum().equals(cbCourse.getValue())) {
+                //要求多选题，课程类型对应，考试状态为false才可以添加
+                if (question.getqType().equals("多选题")&&question.getcNum().equals(cbCourse.getValue())&&!question.isExam()) {
+                    //随机添加
+                    if(random.nextInt(10)<5){
+                        continue;
+                    }
                     addMulti(++index, question);
                     //设置状态
                     question.setExam(true);
                     //设置题目序号
                     question.setOrder(index);
-                    j++;
+                    //设置为已经添加题目
+                    isAdd=true;
                     break;
                 }
+            }
+            if(!isAdd){
+                i--;
             }
         }
 
@@ -158,19 +179,28 @@ public class ExamController implements Initializable {
             e.setFont(new Font("微软雅黑",20));
             vbox.getChildren().add(e);
         }
-        j = 0;
         for (int i = 0; i < judge; i++) {
-            for (; j < questions.size(); j++) {
+            isAdd=false;
+            for (int j = 0; j < questions.size(); j++) {
                 Question question = questions.get(j);
-                if (question.getqType().equals("判断题")&&question.getcNum().equals(cbCourse.getValue())) {
+                //要求多选题，课程类型对应，考试状态为false才可以添加
+                if (question.getqType().equals("判断题")&&question.getcNum().equals(cbCourse.getValue())&&!question.isExam()) {
+                    //随机添加
+                    if(random.nextInt(10)<5){
+                        continue;
+                    }
                     addJudge(++index, question);
                     //设置状态
                     question.setExam(true);
                     //设置题目序号
                     question.setOrder(index);
-                    j++;
+                    //设置为已经添加题目
+                    isAdd=true;
                     break;
                 }
+            }
+            if(!isAdd){
+                i--;
             }
         }
 
@@ -180,19 +210,28 @@ public class ExamController implements Initializable {
             e.setFont(new Font("微软雅黑",20));
             vbox.getChildren().add(e);
         }
-        j = 0;
         for (int i = 0; i < completion; i++) {
-            for (; j < questions.size(); j++) {
+            isAdd=false;
+            for (int j = 0; j < questions.size(); j++) {
                 Question question = questions.get(j);
-                if (question.getqType().equals("填空题")&&question.getcNum().equals(cbCourse.getValue())) {
+                //要求多选题，课程类型对应，考试状态为false才可以添加
+                if (question.getqType().equals("填空题")&&question.getcNum().equals(cbCourse.getValue())&&!question.isExam()) {
+                    //随机添加
+                    if(random.nextInt(10)<5){
+                        continue;
+                    }
                     addCompletion(++index, question);
                     //设置状态
                     question.setExam(true);
                     //设置题目序号
                     question.setOrder(index);
-                    j++;
+                    //设置为已经添加题目
+                    isAdd=true;
                     break;
                 }
+            }
+            if(!isAdd){
+                i--;
             }
         }
 
